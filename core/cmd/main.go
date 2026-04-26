@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"log"
 	"os"
 
 	"github.com/k4rkie/skimdex-core/internal/crawler"
-	"github.com/k4rkie/skimdex-core/internal/index"
+	"github.com/k4rkie/skimdex-core/internal/indexer"
+	"github.com/k4rkie/skimdex-core/internal/parser"
 )
 
 func main() {
@@ -19,12 +21,19 @@ func main() {
 	}
 
 	// Create new instance of the indexer
-	indexer := index.NewIndexer()
+	indexer := indexer.NewIndexer()
 
 	for _, filePath := range filePaths {
+		// open the file to parse and index
 		file, _ := os.Open(filePath)
-		defer file.Close()
-		indexer.RegisterDocStruct(filePath, file)
+
+		// create a scanner for the opened file
+		scanner := bufio.NewScanner(file)
+		parsedDoc := parser.ParseMarkdownDocument(scanner)
+
+		file.Close()
+		parsedDoc.Path = filePath
+		indexer.IndexDocument(parsedDoc)
 	}
 
 }
