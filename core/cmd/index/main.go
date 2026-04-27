@@ -8,6 +8,7 @@ import (
 	"github.com/k4rkie/skimdex-core/internal/crawler"
 	"github.com/k4rkie/skimdex-core/internal/indexer"
 	"github.com/k4rkie/skimdex-core/internal/parser"
+	"github.com/k4rkie/skimdex-core/internal/storage"
 )
 
 func main() {
@@ -35,5 +36,5 @@ func main() {
 		parsedDoc.Path = filePath
 		indexer.IndexDocument(parsedDoc)
 	}
-
+	storage.StoreToDisk(indexer)
 }

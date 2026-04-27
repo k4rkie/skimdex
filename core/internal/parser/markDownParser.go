@@ -25,7 +25,7 @@ func ParseMarkdownDocument(scanner *bufio.Scanner) (parsedDoc models.ParsedDocum
 			docTitle = currentLine[2:]
 		}
 
-		currentLineSanitized := sanitizeLine(currentLine)
+		currentLineSanitized := strings.ToLower(sanitizeLine(currentLine))
 		words := strings.Split(currentLineSanitized, " ")
 
 		for _, word := range words {
